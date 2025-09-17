@@ -44,10 +44,10 @@ function iniciar() {
      */
 
     campos = [
-        { campo: txt1, div: val1, valueMissing: "preenche ai po!" },
+        { campo: txt1, div: val1, valueMissing: "preenche ai, pô!" },
         { campo: txt2, div: val2, typeMismatch: "é pra entrar com um e-mail..." },
-        { campo: txt3, div: val3, patternMismatch: "o padrão tá errado...", valid: "ok!", valueMissing: "preenche ai aien!" },
-        { campo: txt4, div: val4, valid: "valido ié ié" },
+        { campo: txt3, div: val3, patternMismatch: "o padrão tá errado...", valid: "ok!", valueMissing: "preenche ai!" },
+        { campo: txt4, div: val4, valid: "valido ié ié :D" },
     ];
 
     btnTestar.addEventListener( "click", event => {

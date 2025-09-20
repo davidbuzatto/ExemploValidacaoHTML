@@ -55,7 +55,8 @@ function iniciar() {
         { campo: txt4, div: val4, valid: "valido ié ié :D" },
         { campo: sel, div: valSel },
         { campo: area, div: valArea },
-        { campo: txtSenha, div: valSenha, igualA: { campo: txtConfirmacao, div: valConfirmacao } },
+        { campo: txtSenha, div: valSenha },
+        { campo: txtConfirmacao, div: valConfirmacao, igualA: { campo: txtSenha, mensagem: "As senhas não coincidem!" } },
     ];
 
     btnTestar.addEventListener( "click", event => {
@@ -112,10 +113,12 @@ export function configurarValidacaoCamposAoMudarEstado( camposValidacao ) {
         
         item.campo.addEventListener( "input", event => {
             configurarMensagemValidacao( item );
+            configurarMensagemValidacaoCustomizada( item );
         });
 
         item.campo.addEventListener( "blur", event => {
             configurarMensagemValidacao( item );
+            configurarMensagemValidacaoCustomizada( item );
         });
 
     });
@@ -153,6 +156,7 @@ export function configurarValidacaoCamposAoMudarEstado( camposValidacao ) {
 export function validarFormulario( form, camposValidacao ) {
 
     limparMensagensValidacao( form, camposValidacao );
+    configurarMensagensValidacaoCustomizada( camposValidacao );
 
     if ( !form.checkValidity() ) {
         form.classList.add( "was-validated" );
@@ -219,6 +223,18 @@ export function configurarMensagensValidacao( camposValidacao ) {
 }
 
 /**
+ * Configura as mensagens de validação customizadas para um conjunto de campos
+ * de formulário.
+ * 
+ * @param {*} camposValidacao 
+ */
+export function configurarMensagensValidacaoCustomizada( camposValidacao ) {
+    camposValidacao.forEach( item => {
+        configurarMensagemValidacaoCustomizada( item );
+    });
+}
+
+/**
  * Limpa as mensagens de validação de um conjunto de campos de formulário
  * de suas respectivas divs.
  * 
@@ -247,6 +263,8 @@ export function limparMensagensValidacao( form, camposValidacao ) {
                 console.warn( "Campo ou div não encontrados:", item );
                 return;
             }
+            item.campo.setCustomValidity( "" );
+            item.campo.removeAttribute( "aria-invalid" );
             item.div.innerHTML = "";
         });
     } catch ( error ) {
@@ -294,7 +312,7 @@ function configurarMensagemValidacao( item ) {
             console.warn( "Campo ou div não encontrados:", item );
             return;
         }
-
+        
         if ( !campo.valid ) {
 
             for ( const k in campo.validity ) {
@@ -319,6 +337,48 @@ function configurarMensagemValidacao( item ) {
 
     } catch ( error ) {
         console.error( "Erro ao configurar mensagem de validação:", error );
+    }
+
+}
+
+/**
+ * Configura validações customizadas para um campo de formulário.
+ * 
+ * Atualmente suporta:
+ *  - igualA: verifica se o valor de um campo é igual ao valor de outro campo.
+ * 
+ * @param {Object} item Item de validação com propriedades customizadas
+ */
+function configurarMensagemValidacaoCustomizada( item ) {
+
+    const campo = item.campo;
+    const div = item.div;
+
+    if ( !campo || !div ) {
+        console.warn( "Campo ou div não encontrados:", item );
+        return;
+    }
+
+    // validação customizada para campos com o mesmo valor
+    if ( item.igualA ) {
+
+        if ( campo.value !== item.igualA.campo.value ) {
+            
+            const mensagem = item.igualA.mensagem || "Os valores não coincidem";
+            
+            campo.setCustomValidity( mensagem );
+
+            campo.setAttribute( "aria-invalid", "true" );
+            campo.setAttribute( "aria-describedby", div.id );
+
+            div.innerHTML = mensagem;
+
+        } else {
+            campo.setCustomValidity( "" );
+            campo.removeAttribute( "aria-invalid" );
+            div.innerHTML = item.valid || "";
+        }
+
     }
 
 }

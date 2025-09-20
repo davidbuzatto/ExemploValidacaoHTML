@@ -364,7 +364,7 @@ function configurarMensagemValidacaoCustomizada( item ) {
 
         if ( campo.value !== item.igualA.campo.value ) {
             
-            const mensagem = item.igualA.mensagem || "Os valores não coincidem";
+            const mensagem = item.igualA.mensagem || "Os valores não coincidem.";
             
             campo.setCustomValidity( mensagem );
 

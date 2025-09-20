@@ -6,6 +6,8 @@ let txt3;
 let txt4;
 let sel;
 let area;
+let txtSenha;
+let txtConfirmacao;
 
 let val1;
 let val2;
@@ -13,6 +15,8 @@ let val3;
 let val4;
 let valSel;
 let valArea;
+let valSenha;
+let valConfirmacao;
 
 let btnTestar;
 let btnLimpar;
@@ -29,6 +33,8 @@ function iniciar() {
     txt4 = document.getElementById( "txt4" );
     sel = document.getElementById( "sel" );
     area = document.getElementById( "area" );
+    txtSenha = document.getElementById( "txtSenha" );
+    txtConfirmacao = document.getElementById( "txtConfirmacao" );
 
     val1 = document.getElementById( "val1" );
     val2 = document.getElementById( "val2" );
@@ -36,6 +42,8 @@ function iniciar() {
     val4 = document.getElementById( "val4" );
     valSel = document.getElementById( "valSel" );
     valArea = document.getElementById( "valArea" );
+    valSenha = document.getElementById( "valSenha" );
+    valConfirmacao = document.getElementById( "valConfirmacao" );
 
     btnTestar = document.getElementById( "btnTestar" );
     btnLimpar = document.getElementById( "btnLimpar" );
@@ -47,10 +55,11 @@ function iniciar() {
         { campo: txt4, div: val4, valid: "valido ié ié :D" },
         { campo: sel, div: valSel },
         { campo: area, div: valArea },
+        { campo: txtSenha, div: valSenha, igualA: { campo: txtConfirmacao, div: valConfirmacao } },
     ];
 
     btnTestar.addEventListener( "click", event => {
-        if ( verificarValidacaoCampos( camposValidacao ) ) {
+        if ( validarFormulario( form, camposValidacao ) ) {
             console.log( "ok!" );
         } else {
             console.log( "erro!" );
@@ -58,8 +67,7 @@ function iniciar() {
     });
 
     btnLimpar.addEventListener( "click", event => {
-        form.reset();
-        limparMensagensValidacao( camposValidacao );
+        limparFormulario( form, camposValidacao );
     });
 
     configurarValidacaoCamposAoMudarEstado( camposValidacao );
@@ -115,12 +123,11 @@ export function configurarValidacaoCamposAoMudarEstado( camposValidacao ) {
 }
 
 /**
- * Executa a verificação da validação dos campos de formulário. Primeiramente,
- * limpa todas as mensagens de erro e posteriormente executa a verificação
- * usando a Constraint Validation API nativa.
+ * Executa a validação de um formulário. Primeiramente, limpa todas as mensagens
+ * de erro e posteriormente executa a verificação usando a Constraint Validation API nativa.
  * 
  * @example
- * if ( verificarValidacaoCampos( camposValidacao ) ) {
+ * if ( validarFormulario( camposValidacao ) ) {
  *     // Formulário válido - pode enviar
  * } else {
  *     // Há erros - mensagens já foram exibidas
@@ -143,17 +150,47 @@ export function configurarValidacaoCamposAoMudarEstado( camposValidacao ) {
  * 
  * @returns {boolean} Verdadeiro se o formulário for válido, falso caso contrário.
  */
-function verificarValidacaoCampos( camposValidacao ) {
+export function validarFormulario( form, camposValidacao ) {
 
-    limparMensagensValidacao( camposValidacao );
+    limparMensagensValidacao( form, camposValidacao );
 
     if ( !form.checkValidity() ) {
+        form.classList.add( "was-validated" );
         configurarMensagensValidacao( camposValidacao );
         return false;
     }
 
     return true;
 
+}
+
+/**
+ * Limpa o formulário, resetando todos os componentes e limpando as mensagens
+ * de validação.
+ * 
+ * @param {*} form O formulário.
+ * @param {*} camposValidacao Os campos de validação caso o formulário possua campos que precisam ser validados.
+ */
+export function limparFormulario( form, camposValidacao = null ) {
+    if ( camposValidacao ) {
+        limparMensagensValidacao( form, camposValidacao );
+    }
+    form.reset();
+}
+
+/**
+ * Configura as mensagens de validação de campos de formulário.
+ * É a versão antiga, não deve ser usada.
+ * 
+ * @param {*} camposValidacao Os campos que serão configurados.
+ */
+export function configurarMensagensValidacaoAntigo( camposValidacao ) {
+    camposValidacao.forEach( item => {
+        if ( !item.campo.valid ) {
+            item.div.innerHTML = item.campo.dataset.mensagemAdicional ? item.campo.dataset.mensagemAdicional : item.campo.validationMessage;
+        }
+        item.campo.dataset.mensagemAdicional = "";
+    });
 }
 
 /**
@@ -175,7 +212,7 @@ function verificarValidacaoCampos( camposValidacao ) {
  *     - valid: se o campo é válido
  *     - valueMissing: se o campo for obrigatório (required)
  */
-function configurarMensagensValidacao( camposValidacao ) {
+export function configurarMensagensValidacao( camposValidacao ) {
     camposValidacao.forEach( item => {
         configurarMensagemValidacao( item );
     });
@@ -200,7 +237,10 @@ function configurarMensagensValidacao( camposValidacao ) {
  *     - valid: se o campo é válido
  *     - valueMissing: se o campo for obrigatório (required)
  */
-function limparMensagensValidacao( camposValidacao ) {
+export function limparMensagensValidacao( form, camposValidacao ) {
+
+    form.classList.remove( "was-validated" );
+
     try {
         camposValidacao.forEach( item => {
             if ( !item.campo || !item.div ) {
@@ -212,6 +252,7 @@ function limparMensagensValidacao( camposValidacao ) {
     } catch ( error ) {
         console.error( "Erro ao limpar mensagens de validação:", error );
     }
+
 }
 
 /**

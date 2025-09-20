@@ -1,47 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste</title>
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste</title>
+  <style>
 
-        .erro {
-            color: red;
-        }
+    .erro {
+      color: red;
+    }
 
-        input:invalid {
-            color: red;
-        }
+    input:invalid {
+      color: red;
+    }
 
-        input:valid {
-            color: blue;
-        }
+    input:valid {
+      color: blue;
+    }
 
-    </style>
+  </style>
 </head>
 <body>
-    
-    <form id="formulario">
-        <table>
-            <tr><td>Campo texto 1:</td><td><input type="text" id="txt1" required/></td></tr>
-            <tr><td></td><td><div id="val1" class="erro"></div></td></tr>
-            <tr><td>Campo texto 2:</td><td><input type="email" id="txt2" required/></td></tr>
-            <tr><td></td><td><div id="val2" class="erro"></div></td></tr>
-            <tr><td>Campo texto 3:</td><td><input type="text" pattern="\d{3}" id="txt3" required/></td></tr>
-            <tr><td></td><td><div id="val3" class="erro"></div></td></tr>
-            <tr><td>Campo texto 4:</td><td><input type="text" id="txt4"/></td></tr>
-            <tr><td></td><td><div id="val4" class="erro"></div></td></tr>
-            <tr><td>Select:</td><td><select id="sel" required><option value="">A</option><option value="x">B</option></select></td></tr>
-            <tr><td></td><td><div id="valSel" class="erro"></div></td></tr>
-            <tr><td>Área:</td><td><textarea id="area" required></textarea></td></tr>
-            <tr><td></td><td><div id="valArea" class="erro"></div></td></tr>
-        </table>
-    </form>
-    <button id="btnTestar">Testar</button>
-    <button id="btnLimpar">Limpar</button>
+  
+  <form id="formulario">
+    <table style="display: none;">
+      <tr>
+        <td>Campo texto 1:</td>
+        <td><input type="text" id="txt1" required/></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><div id="val1" class="erro"></div></td>
+      </tr>
+      <tr>
+        <td>Campo texto 2:</td>
+        <td><input type="email" id="txt2" required/></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><div id="val2" class="erro"></div></td>
+      </tr>
+      <tr>
+        <td>Campo texto 3:</td>
+        <td><input type="text" pattern="\d{3}" id="txt3" required/></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><div id="val3" class="erro"></div></td>
+      </tr>
+      <tr>
+        <td>Campo texto 4:</td>
+        <td><input type="text" id="txt4"/></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><div id="val4" class="erro"></div></td>
+      </tr>
+      <tr>
+        <td>Select:</td>
+        <td>
+          <select id="sel" required>
+            <option value="">A</option>
+            <option value="x">B</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><div id="valSel" class="erro"></div></td>
+      </tr>
+      <tr>
+        <td>Área:</td>
+        <td><textarea id="area" required></textarea></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><div id="valArea" class="erro"></div></td>
+      </tr>
+    </table>
+    <table>
+        <tr>
+            <td>Senha:</td>
+            <td><input type="text" id="txtSenha" required size="5"/></td>
+            <td>Confirmação da Senha:</td>
+            <td><input type="text" id="txtConfirmacao" required size="5"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><div id="valSenha" class="erro"></div></td>
+            <td></td>
+            <td><div id="valConfirmacao" class="erro"></div></td>
+        </tr>
+    </table>
+  </form>
+  <button id="btnTestar">Testar</button>
+  <button id="btnLimpar">Limpar</button>
 
-    <script src="script.js" type="module"></script>
+  <script src="script.js" type="module"></script>
 
 </body>
 </html>
